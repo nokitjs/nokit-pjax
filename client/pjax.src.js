@@ -12,6 +12,9 @@
     owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
     
+    //设置
+    NProgress.configure({ showSpinner: false });
+    
     //包裹URL
     owner.wrapUrl = function (url) {
         if (!url) return url;
