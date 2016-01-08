@@ -25,6 +25,7 @@ npm install nokit-pjax -save
 ```html
 ...
 <head>
+     <script src="/js/jquery.js"></script>
      <script src="client/pjax.js"></script>
 </head>
 <a href="./index" data-pjax-container="#info">index</a> | 
