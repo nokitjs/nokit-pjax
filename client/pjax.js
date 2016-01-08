@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.0.6
+ * @version v0.0.7
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -496,6 +496,10 @@
     owner.CONTAINER_ATTR_NAME = 'data-pjax-container';
     owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
+    
+    //设置
+    NProgress.configure({ showSpinner: false });
+    //remark #52c277
     
     //包裹URL
     owner.wrapUrl = function (url) {
