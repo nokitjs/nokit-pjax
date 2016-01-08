@@ -27,16 +27,17 @@
     //呈现
     owner.render = function (result) {
         owner.elements = owner.elements || {};
+        if (!result) return owner;
+        //更新标题
+        if (result.title !== null && result.title !== undefined) {
+            document.title = result.title;
+        }
         //更新容器内容
         for (var key in result) {
             if (key != 'title' && result[key] !== null && result[key] !== undefined) {
                 owner.elements[key] = owner.elements[key] || $(key);
                 owner.elements[key].html(result[key]);
             }
-        }
-        //更新标题
-        if (result.title !== null && result.title !== undefined) {
-            document.title = result.title;
         }
         return owner;
     };
@@ -76,7 +77,8 @@
         });
         //state 改变事件
         $(window).on('popstate', function (event) {
-            owner.render(window.history.state);
+            location.replace(location.href)
+            //owner.render(window.history.state);
         });
     });
 
