@@ -13,16 +13,15 @@
     owner.EVENT_NAME = 'click';
 
     //请求
-    owner.request = function (url, containers, callback) {
-        var options = {
-            "type": "GET",
-            "url": url,
-            "dataType": "json",
-            "success": callback
-        };
-        options.headers = {};
-        options.headers[owner.CONTAINER_PARAM] = containers;
+    owner.request = function (options, callback) {
+        options = options || {};
+        options.type = options.type || "GET";
+        options.dataType = "json";
+        options.success = callback || options.success;
+        options.headers = options.headers || {};
+        options.headers[owner.CONTAINER_PARAM] = options.containers;
         $.ajax(options);
+        return owner;
     };
 
     //呈现
@@ -39,12 +38,24 @@
         if (result.title !== null && result.title !== undefined) {
             document.title = result.title;
         }
+        return owner;
     };
 
     //更新地址和标题
     owner.pushState = function (url, result) {
         result = result || {};
         window.history.pushState(result, result.title, url);
+        return owner;
+    };
+
+    //提交
+    owner.submit = function (options, callback) {
+        owner.request(options, function (result) {
+            owner.render(result);
+            owner.pushState(options.url, result);
+            if (callback) callback();
+        });
+        return owner;
     };
 
     //绑定事件
@@ -57,9 +68,9 @@
             if (!url || !containers || containers.length < 1) {
                 return false;
             }
-            owner.request(url, containers, function (result) {
-                owner.render(result);
-                owner.pushState(url, result);
+            owner.submit({
+                "url": url,
+                "containers": containers
             });
             return false;
         });
