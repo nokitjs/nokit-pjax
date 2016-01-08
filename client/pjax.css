@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.0.8
+ * @version v0.0.9
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -12,7 +12,7 @@
 }
 
 #nprogress .bar {
-  background: #009a61;
+  background: orange;
 
   position: fixed;
   z-index: 1031;
@@ -30,7 +30,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #009a61, 0 0 5px #009a61;
+  box-shadow: 0 0 10px orange, 0 0 5px orange;
   opacity: 1.0;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
@@ -53,8 +53,8 @@
   box-sizing: border-box;
 
   border: solid 2px transparent;
-  border-top-color: #009a61;
-  border-left-color: #009a61;
+  border-top-color: orange;
+  border-left-color: orange;
   border-radius: 50%;
 
   -webkit-animation: nprogress-spinner 400ms linear infinite;

@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.0.8
+ * @version v0.0.9
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
