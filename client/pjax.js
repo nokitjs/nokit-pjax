@@ -11,16 +11,24 @@
     owner.CONTAINER_ATTR_NAME = 'data-pjax-container';
     owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
+    
+    //包裹URL
+    owner.wrapUrl = function (url) {
+        if (!url) return url;
+        return url += (url.indexOf('?') > -1 ? '&' : '?') + '__t=' + Date.now();
+    };
 
     //请求
     owner.request = function (options, callback) {
-        options = options || {};
         options.type = options.type || "GET";
         options.dataType = "json";
         options.success = callback || options.success;
         options.headers = options.headers || {};
         options.headers[owner.CONTAINER_PARAM] = options.containers;
+        var oldUrl = options.url;
+        options.url = owner.wrapUrl(options.url);
         $.ajax(options);
+        options.url = oldUrl;
         return owner;
     };
 
@@ -77,8 +85,8 @@
         });
         //state 改变事件
         $(window).on('popstate', function (event) {
-            location.replace(location.href)
-            //owner.render(window.history.state);
+            //location.replace(location.href)
+            owner.render(window.history.state);
         });
     });
 
