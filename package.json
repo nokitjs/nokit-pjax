@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/nokitjs/nokit-filter-pajax.git"
+        "url": "git+https://github.com/nokitjs/nokit-pjax.git"
     },
     "keywords": [
         "nokit",
