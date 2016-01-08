@@ -32,6 +32,7 @@ PjaxFilter.prototype.onResponse = function (context, next) {
         buffer = buffer.toString();
         var $ = cheerio.load(buffer, { decodeEntities: false });
         containers = containers.split(',');
+        containers.push('title');
         var result = {};
         containers.forEach(function (selector) {
             result[selector] = $(selector).html();

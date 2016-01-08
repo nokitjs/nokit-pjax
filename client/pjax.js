@@ -1,8 +1,15 @@
 /* global jQuery */
-(function (owner, $, document, undefined) {
+(function (owner, $, window, document, undefined) {
 
+    //检查是否支持 pushState
+    if (!window.history.pushState) {
+        return;
+    }
+
+    //定义 “常量”
     owner.CONTAINER_PARAM = 'x-pjax-container';
-    owner.ATTR_NAME = 'data-pjax-container';
+    owner.CONTAINER_ATTR_NAME = 'data-pjax-container';
+    owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
 
     //请求
@@ -27,18 +34,26 @@
         }
     };
 
+    //更新地址和标题
+    owner.pushState = function (url) {
+        window.history.pushState({}, "", url);
+    };
+
     //绑定事件
     $(function () {
-        $(document).on(owner.EVENT_NAME, '[' + owner.ATTR_NAME + ']', function (event) {
-            var containers = $(this).attr('ATTR_NAME');
-            if (!containers || containers.length < 1) {
+        $(document).on(owner.EVENT_NAME, '[' + owner.CONTAINER_ATTR_NAME + ']', function (event) {
+            var link = $(this);
+            var url = link.attr(owner.URL_ATTR_NAME) || link.attr('href');
+            var containers = link.attr(owner.CONTAINER_ATTR_NAME);
+            if (!url || !containers || containers.length < 1) {
                 return false;
             }
-            owner.request(containers, function (result) {
+            owner.request(url, containers, function (result) {
                 owner.render(result);
+                owner.pushState(url);
             });
             return false;
         });
     });
 
-})(window.pjax = window.pjax || {}, jQuery, document, undefined);
+})(window.pjax = window.pjax || {}, jQuery, window, document, undefined);
