@@ -14,7 +14,7 @@
     
     //设置
     NProgress.configure({ showSpinner: false });
-    //remark #52c277
+    //remark #009a61
     
     //包裹URL
     owner.wrapUrl = function (url) {

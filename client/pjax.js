@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.0.7
+ * @version v0.0.8
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -499,7 +499,7 @@
     
     //设置
     NProgress.configure({ showSpinner: false });
-    //remark #52c277
+    //remark #009a61
     
     //包裹URL
     owner.wrapUrl = function (url) {
