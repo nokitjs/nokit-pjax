@@ -14,7 +14,8 @@ npm install nokit-pjax -save
     },
     "folders":{
         "public":{
-            "client/pjax.js$": "./node_modules/nokit-pjax"
+            "^/client/pjax.min.js$": "./node_modules/nokit-pjax",
+            "^/client/pjax.min.css$": "./node_modules/nokit-pjax"
         }
     }
     ...
@@ -25,8 +26,9 @@ npm install nokit-pjax -save
 ```html
 ...
 <head>
+     <link rel="stylesheet" href="/client/pjax.min.css" />
      <script src="/js/jquery.js"></script>
-     <script src="client/pjax.js"></script>
+     <script src="/client/pjax.min.js"></script>
 </head>
 <a href="./index" data-pjax-container="#info">index</a> | 
 <a href="./test" data-pjax-container="#info">test</a>
