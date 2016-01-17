@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.0.9
+ * @version v0.1.0
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -483,6 +483,7 @@
 });
 
 
+/* global NProgress */
 /* global jQuery */
 (function (owner, $, window, document, undefined, NProgress) {
 
@@ -553,6 +554,10 @@
         owner.request(options, function (result) {
             owner.render(result);
             owner.pushState(options.url, result);
+            if (document.body) {
+                document.body.scrollTop = 0;
+                document.body.scrollLeft = 0;
+            }
             if (callback) callback();
         });
         return owner;
@@ -566,13 +571,13 @@
             var url = link.attr(owner.URL_ATTR_NAME) || link.attr('href');
             var containers = link.attr(owner.CONTAINER_ATTR_NAME);
             if (!url || !containers || containers.length < 1) {
-                return false;
+                return;
             }
             owner.submit({
                 "url": url,
                 "containers": containers
             });
-            return false;
+            event.preventDefault();
         });
         //state 改变事件
         $(window).on('popstate', function (event) {
