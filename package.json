@@ -1,6 +1,6 @@
 {
     "name": "nokit-pjax",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A pjax module",
     "main": "./server/index.js",
     "scripts": {
