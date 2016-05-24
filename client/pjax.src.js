@@ -7,20 +7,26 @@
         return;
     }
 
+    owner.progress = NProgress;
+
     //定义 “常量”
     owner.CONTAINER_PARAM = 'x-pjax-container';
     owner.CONTAINER_ATTR_NAME = 'data-pjax-container';
     owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
-    
+    owner.FORM_EVENT_NAME = 'submit';
+
     //设置
-    NProgress.configure({ showSpinner: false });
+    //NProgress.configure({ showSpinner: false });
     //remark #009a61
-    
+
     //包裹URL
     owner.wrapUrl = function (url) {
         if (!url) return url;
-        return url += (url.indexOf('?') > -1 ? '&' : '?') + '__t=' + Date.now();
+        var urlParts = url.split('#');
+        var hash = urlParts[1];
+        url = urlParts[0] + (url.indexOf('?') > -1 ? '&' : '?') + '__t=' + Date.now();
+        return hash ? url + '#' + hash : url;
     };
 
     //请求
@@ -28,7 +34,11 @@
         NProgress.start();
         options.type = options.type || "GET";
         options.dataType = "json";
-        options.success = callback || options.success;
+        options._success = options.success;
+        options.success = function (result) {
+            if (callback) callback(result);
+            if (options._success) options._success(result);
+        };
         options.headers = options.headers || {};
         options.headers[owner.CONTAINER_PARAM] = options.containers;
         var oldUrl = options.url;
@@ -69,7 +79,10 @@
         owner.request(options, function (result) {
             owner.render(result);
             owner.pushState(options.url, result);
-            if (document.body) {
+            var hash = options.url.split('#')[1];
+            if (hash) {
+                location.href = '#' + hash;
+            } else {
                 document.body.scrollTop = 0;
                 document.body.scrollLeft = 0;
             }
@@ -80,20 +93,49 @@
 
     //绑定事件
     $(function () {
-        //链接事件
-        $(document).on(owner.EVENT_NAME, '[' + owner.CONTAINER_ATTR_NAME + ']', function (event) {
-            var link = $(this);
-            var url = link.attr(owner.URL_ATTR_NAME) || link.attr('href');
-            var containers = link.attr(owner.CONTAINER_ATTR_NAME);
-            if (!url || !containers || containers.length < 1) {
-                return;
-            }
-            owner.submit({
-                "url": url,
-                "containers": containers
+        //链接处理
+        $(document).on(owner.EVENT_NAME,
+            '[' + owner.CONTAINER_ATTR_NAME + ']',
+            function (event) {
+                var link = $(this);
+                var url = link.attr(owner.URL_ATTR_NAME) || link.attr('href');
+                var containers = link.attr(owner.CONTAINER_ATTR_NAME);
+                if (!url || !containers || containers.length < 1) {
+                    return;
+                }
+                owner.submit({
+                    "url": url,
+                    "containers": containers
+                });
+                event.preventDefault();
             });
-            event.preventDefault();
-        });
+
+        //表单处理
+        $(document).on(owner.FORM_EVENT_NAME,
+            'form[' + owner.CONTAINER_ATTR_NAME + ']',
+            function (event) {
+                if (typeof FormData == 'undefined') {
+                    return;
+                }
+                var form = $(this);
+                var url = form.attr('action') || location.href;
+                var containers = form.attr(owner.CONTAINER_ATTR_NAME);
+                var method = form.attr('method') || 'POST';
+                if (!url || !containers || containers.length < 1) {
+                    return;
+                }
+                var formData = new FormData(this);
+                owner.submit({
+                    "url": url,
+                    "type": method,
+                    "containers": containers,
+                    "data": formData,
+                    "processData": false,
+                    "contentType": false
+                });
+                event.preventDefault();
+            });
+
         //state 改变事件
         $(window).on('popstate', function (event) {
             //location.replace(location.href)

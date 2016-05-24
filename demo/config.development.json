@@ -1,0 +1,12 @@
+{
+  "showErrorDetail": true,
+  "filters": {
+    "^/": "nokit-pjax"
+  },
+  "folders": {
+    "public": {
+      "^/pjax/(.*)$": "./node_modules/nokit-pjax/client",
+      "^/jquery/(.*)$": "./node_modules/jquery/dist"
+    }
+  }
+}

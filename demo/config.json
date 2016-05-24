@@ -1,0 +1,16 @@
+{
+  "handlers": {
+    "^/": "$./handlers/mvc"
+  },
+  "mvc": {
+    "routes": {
+      "/test1": {
+        "view": "./test1"
+      },
+      "/test2": {
+        "view": "./test2"
+      },
+      "/test3": "./test3"
+    }
+  }
+}
