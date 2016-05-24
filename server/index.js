@@ -1,6 +1,7 @@
 var cheerio = require("cheerio");
 
 var CONTAINER_PARAM = 'x-pjax-container';
+var REDIRECT_ENABLED = 'x-pjax-redirect';
 
 /**
  * PjaxFilter
@@ -22,7 +23,10 @@ PjaxFilter.prototype.onResponse = function (context, next) {
         return next();
     }
     //重置重定向动作
-    if (self.configs.redirect &&
+    var redirectEnabled = Boolean(context.param(REDIRECT_ENABLED) ||
+        context.request.headers[CONTAINER_PARAM] ||
+        self.configs.redirect);
+    if (redirectEnabled &&
         [301, 302, 307].indexOf(context.response.statusCode) > -1) {
         context.response.statusCode = 200;
         return context.json({

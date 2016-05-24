@@ -16,6 +16,8 @@
     owner.URL_ATTR_NAME = "data-pjax-url";
     owner.EVENT_NAME = 'click';
     owner.FORM_EVENT_NAME = 'submit';
+    owner.REDIRECT_ENABLED = 'x-pjax-redirect';
+    owner.REDIRECT_ATTR_NAME = 'data-pjax-redirect';
 
     //设置
     //NProgress.configure({ showSpinner: false });
@@ -53,6 +55,7 @@
         };
         options.headers = options.headers || {};
         options.headers[owner.CONTAINER_PARAM] = options.containers;
+        options.headers[owner.REDIRECT_ENABLED] = options.redirectEnabled;
         var oldUrl = options.url;
         options.url = owner.wrapUrl(options.url);
         $.ajax(options);
@@ -120,12 +123,14 @@
                 var link = $(this);
                 var url = link.attr(owner.URL_ATTR_NAME) || link.attr('href');
                 var containers = link.attr(owner.CONTAINER_ATTR_NAME);
+                var redirectEnabled = link.attr(owner.REDIRECT_ATTR_NAME);
                 if (!url || !containers || containers.length < 1) {
                     return;
                 }
                 owner.submit({
                     "url": url,
-                    "containers": containers
+                    "containers": containers,
+                    "redirectEnabled": redirectEnabled
                 }, function () {
                     owner.fireEvent(link[0], 'success');
                 });
@@ -142,6 +147,7 @@
                 var form = $(this);
                 var url = form.attr('action') || location.href;
                 var containers = form.attr(owner.CONTAINER_ATTR_NAME);
+                var redirectEnabled = form.attr(owner.REDIRECT_ATTR_NAME);
                 var method = form.attr('method') || 'POST';
                 if (!url || !containers || containers.length < 1) {
                     return;
@@ -151,6 +157,7 @@
                     "url": url,
                     "type": method,
                     "containers": containers,
+                    "redirectEnabled": redirectEnabled,
                     "data": formData,
                     "processData": false,
                     "contentType": false
