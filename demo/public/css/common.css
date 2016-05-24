@@ -12,6 +12,10 @@ input, select, textarea, button {
   font-family: "Helvetica", "Microsoft YaHei", "SimHei";
 }
 
+a {
+  color: red;
+}
+
 .header {
   background-color: #303030;
   padding: 10px 15px;
