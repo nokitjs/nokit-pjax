@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.1.2
+ * @version v0.1.4
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -516,6 +516,7 @@
         return;
     }
 
+    owner.options = {};
     owner.progress = NProgress;
 
     //定义 “常量”
@@ -547,9 +548,10 @@
         options.success = function (result) {
             if (result && result.__location__) {
                 location.href = result.__location__;
-            } else {
+            } else if (owner.options.goTop) {
                 if (callback) callback(result);
                 if (options._success) options._success(result);
+                if (owner.success) owner.success(result);
             }
         };
         options.progress = function (event) {
@@ -610,6 +612,14 @@
         return owner;
     };
 
+    owner.fireEvent = function (target, name, data, canBubble, cancelable) {
+        var event = document.createEvent('HTMLEvents');
+        event.initEvent(name, canBubble, cancelable);
+        event.data = data;
+        event.target = target;
+        target.dispatchEvent(event);
+    };
+
     //绑定事件
     $(function () {
         //链接处理
@@ -625,6 +635,8 @@
                 owner.submit({
                     "url": url,
                     "containers": containers
+                }, function () {
+                    owner.fireEvent(link[0], 'success');
                 });
                 event.preventDefault();
             });
@@ -651,6 +663,8 @@
                     "data": formData,
                     "processData": false,
                     "contentType": false
+                }, function () {
+                    owner.fireEvent(form[0], 'success');
                 });
                 event.preventDefault();
             });
