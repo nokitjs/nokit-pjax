@@ -39,6 +39,12 @@
             if (callback) callback(result);
             if (options._success) options._success(result);
         };
+        options.progress = function (event) {
+            if (event.lengthComputable) {
+                var pct = event.loaded / event.total;
+                NProgress.set(pct);
+            }
+        };
         options.headers = options.headers || {};
         options.headers[owner.CONTAINER_PARAM] = options.containers;
         var oldUrl = options.url;

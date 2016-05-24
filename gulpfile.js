@@ -31,7 +31,10 @@ gulp.task('clear', function (cb) {
 //构建
 gulp.task('build', ["clear"], function () {
     //js
-    gulp.src(["./node_modules/nprogress/nprogress.js", "./client/pjax.src.js"])
+    gulp.src([
+        "./node_modules/nprogress/nprogress.js",
+        "./client/jquery.ajax.progress.js",
+        "./client/pjax.src.js"])
         .pipe(concat("pjax.js"))
         .pipe(header(banner, pkg))
         .pipe(gulp.dest("./client/"))

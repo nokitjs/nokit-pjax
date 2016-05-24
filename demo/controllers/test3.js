@@ -16,8 +16,8 @@ var Test3Controller = nokit.define({
    **/
   index: function() {
     var self = this;
-    self.context.redirect('/');
-    return;
+    // self.context.redirect('/');
+    // return;
     self.render("test3", {
       "name": "MVC"
     });
