@@ -39,7 +39,7 @@
         options.success = function (result) {
             if (result && result.__location__) {
                 location.href = result.__location__;
-            } else if (owner.options.goTop) {
+            } else {
                 if (callback) callback(result);
                 if (options._success) options._success(result);
                 if (owner.success) owner.success(result);
@@ -94,7 +94,7 @@
             var hash = options.url.split('#')[1];
             if (hash) {
                 location.href = '#' + hash;
-            } else {
+            } else if (owner.options.goTop) {
                 document.body.scrollTop = 0;
                 document.body.scrollLeft = 0;
             }
