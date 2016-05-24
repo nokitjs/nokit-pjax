@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.1.1
+ * @version v0.1.2
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -545,8 +545,12 @@
         options.dataType = "json";
         options._success = options.success;
         options.success = function (result) {
-            if (callback) callback(result);
-            if (options._success) options._success(result);
+            if (result && result.__location__) {
+                location.href = result.__location__;
+            } else {
+                if (callback) callback(result);
+                if (options._success) options._success(result);
+            }
         };
         options.progress = function (event) {
             if (event.lengthComputable) {

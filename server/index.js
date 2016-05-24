@@ -17,6 +17,13 @@ PjaxFilter.prototype.onResponse = function (context, next) {
     if (!containers || containers.length < 1) {
         return next();
     }
+    //重置重定向动作
+    if ([301, 302, 307].indexOf(context.response.statusCode) > -1) {
+        context.response.statusCode = 200;
+        return context.json({
+            __location__: context.response.getHeader('Location')
+        });
+    }
     //检查 statusCode & mime
     var htmlMime = context.server.mime('.html');
     if (context.response.statusCode != 200 ||

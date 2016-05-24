@@ -16,6 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^2.2.4",
-    "nokitjs": "^1.23.3"
+    "nokitjs": "^1.24.0"
   }
 }
