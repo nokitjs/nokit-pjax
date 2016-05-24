@@ -5,12 +5,16 @@ var CONTAINER_PARAM = 'x-pjax-container';
 /**
  * PjaxFilter
  **/
-var PjaxFilter = function () { };
+var PjaxFilter = function (server) {
+    var self = this;
+    self.configs = server.configs.pjax || {};
+};
 
 /**
  * 在发送响应时
  **/
 PjaxFilter.prototype.onResponse = function (context, next) {
+    var self = this;
     //检查参数
     var containers = context.param(CONTAINER_PARAM) ||
         context.request.headers[CONTAINER_PARAM];
@@ -18,7 +22,8 @@ PjaxFilter.prototype.onResponse = function (context, next) {
         return next();
     }
     //重置重定向动作
-    if ([301, 302, 307].indexOf(context.response.statusCode) > -1) {
+    if (self.configs.redirect &&
+        [301, 302, 307].indexOf(context.response.statusCode) > -1) {
         context.response.statusCode = 200;
         return context.json({
             __location__: context.response.getHeader('Location')

@@ -6,7 +6,7 @@ var Test3Controller = nokit.define({
   /**
    * 初始化方法，每次请求都会先执行 init 方法
    **/
-  init: function() {
+  init: function () {
     var self = this;
     self.ready();
   },
@@ -14,10 +14,8 @@ var Test3Controller = nokit.define({
   /**
    * 默认 action
    **/
-  index: function() {
+  index: function () {
     var self = this;
-    self.context.redirect('http://baidu.com');
-    return;
     self.render("test3", {
       "name": "MVC"
     });
