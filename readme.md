@@ -2,7 +2,7 @@ A pajax server support module
 
 ### install
 ```sh
-npm install nokit-pjax -save
+npm install nokit-pjax --save
 ```
 
 ### server
