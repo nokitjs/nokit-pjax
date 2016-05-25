@@ -137,6 +137,7 @@
                     owner.fireEvent(link[0], 'pjaxEnd');
                 });
                 event.preventDefault();
+                return false;
             });
 
         //表单处理
@@ -168,6 +169,7 @@
                     owner.fireEvent(form[0], 'pjaxEnd');
                 });
                 event.preventDefault();
+                return false;
             });
 
         //state 改变事件

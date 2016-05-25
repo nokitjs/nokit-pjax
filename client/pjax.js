@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.1.8
+ * @version v0.1.9
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -646,6 +646,7 @@
                     owner.fireEvent(link[0], 'pjaxEnd');
                 });
                 event.preventDefault();
+                return false;
             });
 
         //表单处理
@@ -677,6 +678,7 @@
                     owner.fireEvent(form[0], 'pjaxEnd');
                 });
                 event.preventDefault();
+                return false;
             });
 
         //state 改变事件
