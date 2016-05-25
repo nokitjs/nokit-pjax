@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.1.7
+ * @version v0.1.8
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -544,6 +544,7 @@
     //请求
     owner.request = function (options, callback) {
         NProgress.start();
+        if (owner.pjaxBegin) owner.pjaxBegin();
         options.type = options.type || "GET";
         options.dataType = "json";
         options._success = options.success;
@@ -553,11 +554,11 @@
             } else {
                 if (callback) callback(result);
                 if (options._success) options._success(result);
-                if (owner.success) owner.success(result);
+                if (owner.pjaxEnd) owner.pjaxEnd(result);
             }
         };
         options.progress = function (event) {
-            if (event.lengthComputable) {
+            if (!owner.fakeProgress && event.lengthComputable) {
                 var pct = event.loaded / event.total;
                 NProgress.set(pct);
             }
@@ -636,12 +637,13 @@
                 if (!url || !containers || containers.length < 1) {
                     return;
                 }
+                owner.fireEvent(link[0], 'pjaxBegin');
                 owner.submit({
                     "url": url,
                     "containers": containers,
                     "redirectEnabled": redirectEnabled
                 }, function () {
-                    owner.fireEvent(link[0], 'success');
+                    owner.fireEvent(link[0], 'pjaxEnd');
                 });
                 event.preventDefault();
             });
@@ -661,6 +663,7 @@
                 if (!url || !containers || containers.length < 1) {
                     return;
                 }
+                owner.fireEvent(form[0], 'pjaxBegin');
                 var formData = new FormData(this);
                 owner.submit({
                     "url": url,
@@ -671,7 +674,7 @@
                     "processData": false,
                     "contentType": false
                 }, function () {
-                    owner.fireEvent(form[0], 'success');
+                    owner.fireEvent(form[0], 'pjaxEnd');
                 });
                 event.preventDefault();
             });
