@@ -1,6 +1,6 @@
 /**
  * nokit-pjax - A pjax module
- * @version v0.1.9
+ * @version v0.2.0
  * @link https://github.com/nokitjs/nokit-filter-pajax#readme
  * @license MIT
  * @author 
@@ -575,7 +575,6 @@
 
     //呈现
     owner.render = function (result) {
-        owner.elements = owner.elements || {};
         if (!result) return owner;
         //更新标题
         if (result.title !== null && result.title !== undefined) {
@@ -584,8 +583,7 @@
         //更新容器内容
         for (var key in result) {
             if (key != 'title' && result[key] !== null && result[key] !== undefined) {
-                owner.elements[key] = owner.elements[key] || $(key);
-                owner.elements[key].html(result[key]);
+                $(key).html(result[key]);
             }
         }
         NProgress.done();
